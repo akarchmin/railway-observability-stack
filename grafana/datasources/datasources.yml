@@ -14,11 +14,6 @@ datasources:
     orgId: 1
     uid: grafana_lokiq
     url: $LOKI_INTERNAL_URL
-    user:
-    database:
-    basicAuth:
-    basicAuthUser:
-    withCredentials:
     isDefault: true
   - name: Prometheus
     type: prometheus
@@ -26,11 +21,6 @@ datasources:
     orgId: 1
     uid: grafana_prometheus
     url: $PROMETHEUS_INTERNAL_URL
-    user:
-    database:
-    basicAuth:
-    basicAuthUser:
-    withCredentials:
     isDefault: false
   - name: Tempo
     type: tempo
@@ -38,9 +28,4 @@ datasources:
     orgId: 1
     uid: grafana_tempo
     url: $TEMPO_INTERNAL_URL
-    user:
-    database:
-    basicAuth:
-    basicAuthUser:
-    withCredentials:
     isDefault: false
