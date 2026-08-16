@@ -12,6 +12,12 @@
         "sleepApplication": false,
         "restartPolicyType": "ON_FAILURE",
         "restartPolicyMaxRetries": 10,
+        "limitOverride": {
+            "containers": {
+                "cpu": 1,
+                "memoryBytes": 1073741824
+            }
+        },
         "volumes": [
             {
                 "path": "/prometheus",
