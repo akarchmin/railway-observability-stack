@@ -1,0 +1,11 @@
+# Tempo 3.x removed the top-level `compactor` block, so stay on the 2.x line.
+ARG VERSION=2.10.8
+
+FROM grafana/tempo:${VERSION}
+
+# Railway volumes are mounted root-owned; the image default user cannot write to them.
+USER root
+
+COPY tempo.yml /etc/tempo/tempo.yml
+
+CMD ["-config.file=/etc/tempo/tempo.yml"]

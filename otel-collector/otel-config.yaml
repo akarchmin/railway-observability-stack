@@ -1,0 +1,53 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  batch:
+  
+  # Transform resource attributes for Prometheus labels
+  resource:
+    attributes:
+      - key: job
+        action: delete
+      - key: service
+        action: upsert
+        from_attribute: service.name
+
+exporters:
+  # Tempo for traces
+  otlp/tempo:
+    endpoint: ${env:TEMPO_ENDPOINT:-http://tempo:4317}
+    tls:
+      insecure: true
+  
+  # Prometheus for metrics
+  prometheusremotewrite:
+    endpoint: ${env:PROMETHEUS_ENDPOINT:-http://prometheus:9090/api/v1/write}
+    resource_to_telemetry_conversion:
+      enabled: true
+  
+  # Loki for logs via OTLP HTTP
+  otlphttp/loki:
+    endpoint: ${env:LOKI_ENDPOINT:-http://loki:3100/otlp}
+    tls:
+      insecure: true
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlp/tempo]
+    metrics:
+      receivers: [otlp]
+      processors: [batch, resource]
+      exporters: [prometheusremotewrite]
+    logs:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlphttp/loki]
