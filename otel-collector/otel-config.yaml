@@ -33,7 +33,7 @@ exporters:
   
   # Loki for logs via OTLP HTTP
   otlphttp/loki:
-    endpoint: ${env:LOKI_ENDPOINT:-http://loki:3100/otlp}
+    endpoint: ${env:LOKI_ENDPOINT:-http://loki:3100/loki/api/v1/push}
     tls:
       insecure: true
 
